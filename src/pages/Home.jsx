@@ -7,7 +7,7 @@ function Home() {
     <div
       className="container p-4"
       style={{
-        fontFamily: "Inter",
+        fontFamily: "Minggola",
         backgroundImage: "../assets/grad-bg.jpg",
         backgroundSize: "cover",
         backgroundPosition: "center",

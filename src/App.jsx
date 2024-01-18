@@ -29,27 +29,43 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
 
+        {/* Base route for Admin */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <AdminAuthRoutes>
-              <AdminDashBoard />
+              <Routes>
+                <Route index path="/" element={<AdminDashBoard />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+              {/* Add more nested routes for Admin as needed */}
             </AdminAuthRoutes>
           }
         />
+        {/* Base route for Creator */}
         <Route
-          path="/creator"
+          path="/creator/*"
           element={
             <CreatorAuthRoutes>
-              <CreatorDashBoard />
+              <Routes>
+                <Route index path="/" element={<CreatorDashBoard />} />
+                {/* Add more nested routes for Creator as needed */}
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
             </CreatorAuthRoutes>
           }
         />
+
+        {/* Base route for Worker */}
         <Route
-          path="/worker"
+          path="/worker/*"
           element={
             <WorkerAuthRoutes>
-              <WorkerDashBoard />
+              <Routes>
+                <Route index path="/" element={<WorkerDashBoard />} />
+                {/* Add more nested routes for Worker as needed */}
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
             </WorkerAuthRoutes>
           }
         />
