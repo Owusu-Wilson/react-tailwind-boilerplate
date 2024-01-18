@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* File: font.css */
+
+@font-face {
+  font-family: "Minggola";
+  src: local("Minggola"), url("./assets/fonts/minggola.tff") format("ttf");
+}
