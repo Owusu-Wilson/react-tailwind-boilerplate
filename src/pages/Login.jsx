@@ -16,6 +16,8 @@ import Logo from "../assets/logo.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// FUNCTIONS FROM OUTSIDE
+import { loginUser } from "./firebase/userAuth";
 function Form() {
   // REDUX STATES
   const CURRENT_USER_TYPE = useSelector(
@@ -27,10 +29,27 @@ function Form() {
   const CURRENT_USER_EMAIL = useSelector(
     (state) => state.currentUserProfile.userEmail
   );
-  const [isEyeClosed, setIsEyeClosed] = useState(false);
+  // FORM STATES
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("");
+
   const navigate = useNavigate();
-  const handleLogin = () => {
-    navigate(`/${CURRENT_USER_TYPE}`);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const result = await loginUser(email, password);
+
+    if (result.type === "SUCCESS") {
+      console.log("MESSAGE FRON LOGIN ", "Login successful");
+      console.log(result);
+
+      // Navigate to a different page after successful login
+      // navigate(`/${CURRENT_USER_TYPE}`); // Replace '/home' with your desired destination route
+    } else {
+      // Handle login error
+      console.error(result.message);
+    }
   };
 
   return (
@@ -44,7 +63,10 @@ function Form() {
           type="email"
           placeholder="name@flowbite.com"
           required
-          shadow
+          value={email}
+          onValueChange={(text) => {
+            setEmail(text);
+          }}
         />
       </div>
       <div>
@@ -52,10 +74,13 @@ function Form() {
           <Label htmlFor="password2" value="Your password" />
         </div>
         <TextInput
-          placeholder="Enter New Password..."
+          placeholder="Enter Password..."
           type="password"
           required
-          shadow
+          value={password}
+          onValueChange={(text) => {
+            setPassword(text);
+          }}
         />
       </div>
 
@@ -63,7 +88,12 @@ function Form() {
         <div className="mb-2 block">
           <Label htmlFor="countries" value="Select User Type" />
         </div>
-        <Select id="userType" required>
+        <Select
+          id="userType"
+          required
+          value={userType}
+          onChange={(e) => setUserType(e.target.value)}
+        >
           <option>Creator</option>
           <option>Worker</option>
         </Select>
@@ -85,12 +115,7 @@ function Form() {
         <span>OR</span>
       </div>
       <p className="text-center text-custom-blue">I do not have an acount</p>
-      <Button
-        outline
-        className=""
-        type="submit"
-        onClick={() => navigate("/register")}
-      >
+      <Button className="" type="submit" onClick={() => navigate("/register")}>
         Register
       </Button>
     </form>

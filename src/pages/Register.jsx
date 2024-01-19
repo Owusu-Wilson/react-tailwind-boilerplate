@@ -14,13 +14,34 @@ import Logo from "../assets/logo.png";
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "./firebase/userAuth";
 
 function Form() {
-  const [isEyeClosed, setIsEyeClosed] = useState(false);
   const navigate = useNavigate();
-  const handleRegister = () => {
-    alert("Registration Complete");
-    navigate("/login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isEmailExist, setIsEmailExist] = useState(false);
+
+  //state to manage what happens when the eye in the password field is clicked
+  const [showPassword, setShowPassword] = useState(false);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const result = await registerUser(email, password);
+
+    if (result.type === "SUCCESS") {
+      console.log("MESSAGE FRON REGISTER ", "Sign Up of new user successful");
+
+      // Navigate to a different page after successful login
+      navigate("/login"); // Replace '/home' with your desired destination route
+    } else {
+      // Handle login error
+      if (result.error.code === "auth/email-already-in-use") {
+        setIsEmailExist(true);
+      }
+      console.error("REGISTRATION FAILED", result.error);
+    }
   };
 
   return (
@@ -34,7 +55,10 @@ function Form() {
           type="email"
           placeholder="name@flowbite.com"
           required
-          shadow
+          value={email}
+          onValueChange={(text) => {
+            setEmail(text);
+          }}
         />
       </div>
       <div>
@@ -45,7 +69,10 @@ function Form() {
           placeholder="Enter New Password..."
           type="password"
           required
-          shadow
+          value={password}
+          onValueChange={(text) => {
+            setPassword(text);
+          }}
         />
       </div>
       <div>
