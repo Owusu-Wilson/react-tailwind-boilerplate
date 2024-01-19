@@ -6,5 +6,5 @@
 
 @font-face {
   font-family: "Minggola";
-  src: local("Minggola"), url("./assets/fonts/minggola.tff") format("truetype");
+  src: local("Minggola"), url("./assets/fonts/minggola.ttf") format("truetype");
 }
