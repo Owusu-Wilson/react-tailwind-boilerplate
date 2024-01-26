@@ -1,47 +1,40 @@
-import React from "react";
-// PACKAGE IMPORTS
-import LoginIllustration from "../assets/login-illustrator.svg";
-// import { Button } from "reactstrap";
-import { Checkbox, Label, Select } from "flowbite-react";
-
+import React, { useState } from "react";
+import { Checkbox, Label, Select, Spinner } from "flowbite-react";
 import { TextInput, Button } from "@tremor/react";
-
-// FILE IMPORTS
-import BgImage from "../assets/grad-bg.jpg";
-import Logo from "../assets/logo.png";
-
-// ICON IMPORTS
-
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "./firebase/userAuth";
+import Logo from "../assets/logo.png";
 
 function Form() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isEmailExist, setIsEmailExist] = useState(false);
+  const [isInvalidEmail, setIsInvalidEmail] = useState(false);
 
-  //state to manage what happens when the eye in the password field is clicked
-  const [showPassword, setShowPassword] = useState(false);
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const result = await registerUser(email, password);
 
     if (result.type === "SUCCESS") {
-      console.log("MESSAGE FRON REGISTER ", "Sign Up of new user successful");
+      console.log("MESSAGE FROM REGISTER ", "Sign Up of new user successful");
 
-      // Navigate to a different page after successful login
-      navigate("/login"); // Replace '/home' with your desired destination route
+      // Navigate to a different page after successful registration
+      navigate("/login");
     } else {
-      // Handle login error
+      // Handle registration error
       if (result.error.code === "auth/email-already-in-use") {
         setIsEmailExist(true);
+      } else if (result.error.code === "auth/invalid-email") {
+        setIsInvalidEmail(true);
       }
       console.error("REGISTRATION FAILED", result.error);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -102,28 +95,41 @@ function Form() {
           Remember Me &nbsp;
         </Label>
       </div>
+      {isLoading && (
+        /* Use your Flowbite spinner component here */
+        <Spinner size={60} />
+      )}
       <Button
         className="bg-custom-orange hover:bg-orange-400 "
         type="submit"
         onClick={handleRegister}
+        disabled={isLoading}
       >
         Create Account
       </Button>
+      {isEmailExist && (
+        <p className="text-red-500 text-sm mt-2">
+          This email is already registered. Please use a different email.
+        </p>
+      )}
+      {isInvalidEmail && (
+        <p className="text-red-500 text-sm mt-2">
+          This email is Invalid. Please check and try again.
+        </p>
+      )}
       <div className="flex flex-1 justify-center flex-row text-gray-600 ">
         <span>OR</span>
       </div>
-      <p className="text-center text-custom-blue">I already have an acount</p>
-      <Button
-        outline
-        className=""
-        type="submit"
-        onClick={() => navigate("/login")}
-      >
-        LogIn Now
-      </Button>
+      <p className="text-center text-custom-blue">I already have an account</p>
+      <Link to="/login">
+        <Button outline className="mt-2">
+          Log In Now
+        </Button>
+      </Link>
     </form>
   );
 }
+
 function Register() {
   return (
     <div

@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import OutOfBounds from "../OutOfBounds";
+import AdminHeader from "../../components/AdminHeader";
+import AdminLayout from "../../components/AdminLayout";
 function AdminAuthRoutes({ children }) {
   const CURRENT_USER_TYPE = useSelector(
     (state) => state.currentUserProfile.userType
@@ -12,7 +14,15 @@ function AdminAuthRoutes({ children }) {
     (state) => state.currentUserProfile.userEmail
   );
   if (CURRENT_USER_TYPE == "admin") {
-    return { ...children };
+    return (
+      <>
+        <div className="mt-20">
+          <AdminHeader />
+          {/* <AdminLayout /> */}
+          {children}
+        </div>
+      </>
+    );
   } else {
     return <OutOfBounds />;
   }

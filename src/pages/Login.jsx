@@ -1,59 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-// PACKAGE IMPORTS
-import LoginIllustration from "../assets/login-illustrator.svg";
-// import { Button } from "reactstrap";
-import { Checkbox, Label, Select } from "flowbite-react";
-
+import { Card, Checkbox, Label, Select, Spinner } from "flowbite-react";
 import { TextInput, Button } from "@tremor/react";
-
-// FILE IMPORTS
-import BgImage from "../assets/grad-bg.jpg";
-import Logo from "../assets/logo.png";
-
-// ICON IMPORTS
-
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { loginUser, registerWithGoogle } from "./firebase/userAuth";
 
-// FUNCTIONS FROM OUTSIDE
-import { loginUser } from "./firebase/userAuth";
+import Logo from "../assets/logo.png";
 function Form() {
   // REDUX STATES
   const CURRENT_USER_TYPE = useSelector(
     (state) => state.currentUserProfile.userType
   );
-  const CURRENT_USER_NAME = useSelector(
-    (state) => state.currentUserProfile.userName
-  );
-  const CURRENT_USER_EMAIL = useSelector(
-    (state) => state.currentUserProfile.userEmail
-  );
+
   // FORM STATES
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const result = await loginUser(email, password);
 
     if (result.type === "SUCCESS") {
-      console.log("MESSAGE FRON LOGIN ", "Login successful");
+      console.log("MESSAGE FROM LOGIN ", "Login successful");
       console.log(result);
-
       // Navigate to a different page after successful login
-      // navigate(`/${CURRENT_USER_TYPE}`); // Replace '/home' with your desired destination route
+      navigate(`/${CURRENT_USER_TYPE}`);
     } else {
-      // Handle login error
-      console.error(result.message);
+      setError(result.message);
+    }
+
+    setLoading(false);
+  };
+  const handleGoogleLogin = async () => {
+    try {
+      // Call the function to perform Google sign-in
+      const result = await registerWithGoogle();
+
+      // Check the result type and handle accordingly
+      if (result.type === "SUCCESS") {
+        console.log(result.message);
+        const user = result.user;
+        // Do something with the signed-in user
+      } else {
+        console.error(result.message);
+        // Handle the error, if needed
+      }
+    } catch (error) {
+      console.error("Error in googleHandler:", error.message);
+      // Handle unexpected errors
     }
   };
-
   return (
     <form className="flex w-1/4 max-w-xl flex-col gap-4">
+      {loading ? (
+        <Spinner color="pink" className="mb-2 block self-center" />
+      ) : null}
       <div>
         <div className="mb-2 block">
           <Label htmlFor="email2" value="Your email" />
@@ -108,19 +116,30 @@ function Form() {
         className="bg-custom-orange hover:bg-orange-400 "
         type="submit"
         onClick={handleLogin}
+        disabled={loading}
       >
-        Login
+        {loading ? "Logging in..." : "Login"}
       </Button>
+      <Button
+        className="bg-custom-orange hover:bg-orange-400 "
+        type="submit"
+        onClick={handleGoogleLogin}
+        disabled={loading}
+      >
+        {loading ? "Logging in..." : "Sign in with Google"}
+      </Button>
+      {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="flex flex-1 justify-center flex-row text-gray-600 ">
         <span>OR</span>
       </div>
-      <p className="text-center text-custom-blue">I do not have an acount</p>
+      <p className="text-center text-custom-blue">I do not have an account</p>
       <Button className="" type="submit" onClick={() => navigate("/register")}>
         Register
       </Button>
     </form>
   );
 }
+
 function Login() {
   return (
     <div
@@ -132,7 +151,6 @@ function Login() {
         width: "100%",
       }}
     >
-      {/* <!-- Left content goes here --> */}
       <div className=" flex flex-rowjustify-center items-center mb-2 ">
         <img src={Logo} height={40} width={40} className="" />
         <h1 className="text-custom-blue text-5xl font-regular ml-3 p-5">

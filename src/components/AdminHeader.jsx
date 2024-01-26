@@ -29,7 +29,7 @@ const AdminHeader = () => {
       <div className="flex flex-row justify-center items-center ">
         <img src={Logo} width={30} height={30} />
         <Text className="text-sm font-semibold ml-2 bg-slate-800 p-2 rounded-md text-white">
-          Quality Assurance
+          Admin
         </Text>
       </div>
       <div className="flex">
