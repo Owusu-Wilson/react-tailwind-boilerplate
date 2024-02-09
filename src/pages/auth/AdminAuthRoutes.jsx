@@ -16,10 +16,10 @@ function AdminAuthRoutes({ children }) {
   if (CURRENT_USER_TYPE == "admin") {
     return (
       <>
-        <div className="mt-20">
-          <AdminHeader />
-          {/* <AdminLayout /> */}
-          {children}
+        {/* <div className="mt-20"> */}
+        <div>
+          {/* <AdminHeader /> */}
+          <AdminLayout>{children}</AdminLayout>
         </div>
       </>
     );

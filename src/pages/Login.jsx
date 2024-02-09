@@ -21,6 +21,13 @@ function Form() {
 
   const navigate = useNavigate();
 
+  const handleDevLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    navigate(`/${CURRENT_USER_TYPE}`);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -115,7 +122,7 @@ function Form() {
       <Button
         className="bg-custom-orange hover:bg-orange-400 "
         type="submit"
-        onClick={handleLogin}
+        onClick={handleDevLogin}
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}
