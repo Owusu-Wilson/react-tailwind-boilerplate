@@ -24,7 +24,7 @@ function Form() {
   const handleDevLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-
+    console.log("Logged In User Type: ", CURRENT_USER_TYPE);
     navigate(`/${CURRENT_USER_TYPE}`);
   };
 

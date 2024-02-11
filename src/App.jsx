@@ -12,13 +12,27 @@ import WorkerAuthRoutes from "./pages/auth/workerAuthRoutes";
 
 // IMPORTING PAGES
 
+// generic pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AdminDashBoard from "./pages/Admin/AdminDashBoard";
-import CreatorDashBoard from "./pages/Creator/CreatorDashBoard";
-import WorkerDashBoard from "./pages/Worker/WorkerDashBoard";
 import PageNotFound from "./pages/PageNotFound";
+
+// creator related pages
+import CreatorDashBoard from "./pages/Creator/CreatorDashBoard";
+
+// worker related pages
+import WorkerDashBoard from "./pages/Worker/WorkerDashBoard";
+
+// admin related pages
+import AdminDashBoard from "./pages/Admin/AdminDashBoard";
+import AdminCreatorManagement from "./pages/Admin/AdminCreatorManagement";
+import AdminAnalytics from "./pages/Admin/AdminAnalytics";
+import AdminSettings from "./pages/Admin/AdminSettings";
+import AdminWorkerManagement from "./pages/Admin/AdminWorkerManagement";
+import Channels from "./pages/Creator/Channels";
+import Analytics from "./pages/Creator/Analytics";
+import Campaigns from "./pages/Creator/Campaigns";
 
 function App() {
   return (
@@ -36,6 +50,18 @@ function App() {
             <AdminAuthRoutes>
               <Routes>
                 <Route index path="/" element={<AdminDashBoard />} />
+                <Route index path="/analytics" element={<AdminAnalytics />} />
+                <Route
+                  index
+                  path="/creators"
+                  element={<AdminCreatorManagement />}
+                />
+                <Route
+                  index
+                  path="/workers"
+                  element={<AdminWorkerManagement />}
+                />
+                <Route index path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
               {/* Add more nested routes for Admin as needed */}
@@ -49,6 +75,9 @@ function App() {
             <CreatorAuthRoutes>
               <Routes>
                 <Route index path="/" element={<CreatorDashBoard />} />
+                <Route index path="/channels" element={<Channels />} />
+                <Route index path="/analytics" element={<Analytics />} />
+                <Route index path="/campaigns" element={<Campaigns />} />
                 {/* Add more nested routes for Creator as needed */}
                 <Route path="*" element={<PageNotFound />} />
               </Routes>

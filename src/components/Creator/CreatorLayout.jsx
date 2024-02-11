@@ -22,21 +22,21 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AppsIcon from "@mui/icons-material/Apps";
-import TimelineIcon from "@mui/icons-material/Timeline";
-import PaletteIcon from "@mui/icons-material/Palette";
-import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+
 import SettingsIcon from "@mui/icons-material/Settings";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import InsightsIcon from "@mui/icons-material/Insights";
 
 // Custom elements imports
-import Logo from "../assets/logo.png";
+import Logo from "../../assets/logo.png";
 import { Avatar } from "@mui/material";
-import colors from "../../theme";
-import { ExitToAppRounded } from "@mui/icons-material";
+import colors from "../../../theme";
+import { ExitToAppRounded, InsightsRounded } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -105,23 +105,32 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function AdminLayout({ children }) {
+export default function CreatorLayout({ children }) {
   // STATES
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const iconSize = 100;
+  const navigate = useNavigate();
+
   const menuItems = [
-    { title: "DashBoard", icon: <AppsIcon /> },
-    { title: "Analytics", icon: <TimelineIcon /> },
-    { title: "Creators", icon: <PaletteIcon /> },
-    { title: "Workers", icon: <WorkOutlineIcon /> },
+    { title: "DashBoard", icon: <AppsIcon />, link: "/creator/" },
+    {
+      title: "Channels",
+      icon: <FormatListBulletedIcon />,
+      link: "/creator/channels",
+    },
+    {
+      title: "Analytics",
+      icon: <InsightsIcon />,
+      link: "/creator/analytics",
+    },
+    { title: "Campaigns", icon: <CampaignIcon />, link: "/creator/campaigns" },
   ];
   const secondaryMenuItems = [
-    { title: "Settings", icon: <SettingsIcon /> },
-    { title: "Logout", icon: <ExitToAppRounded /> },
+    { title: "Settings", icon: <SettingsIcon />, link: "/creator/settings" },
+    { title: "Logout", icon: <ExitToAppRounded />, link: "/creator/logout" },
   ];
 
   // EVENT HANDLERS
@@ -175,7 +184,7 @@ export default function AdminLayout({ children }) {
                 component="div"
                 className="self-center"
               >
-                Admin
+                Creator
               </Typography>
             </div>
             {auth && (
@@ -231,11 +240,11 @@ export default function AdminLayout({ children }) {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader style={{ backgroundColor: colors.blue }}>
           {/* arrow icon to close the drawer */}
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} color="inherit">
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon color="info" />
             )}
           </IconButton>
         </DrawerHeader>
@@ -255,6 +264,7 @@ export default function AdminLayout({ children }) {
                       justifyContent: open ? "initial" : "center",
                       px: 2.5,
                     }}
+                    onClick={() => navigate(item.link)}
                   >
                     <ListItemIcon
                       sx={{
@@ -297,6 +307,7 @@ export default function AdminLayout({ children }) {
                       mr: open ? 3 : "auto",
                       justifyContent: "center",
                     }}
+                    onClick={() => navigate(item.link)}
                   >
                     {item.icon}
                   </ListItemIcon>
