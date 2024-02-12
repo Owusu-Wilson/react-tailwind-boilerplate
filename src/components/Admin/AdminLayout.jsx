@@ -34,7 +34,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Logo from "../../assets/logo.png";
 import { Avatar } from "@mui/material";
 import colors from "../../../theme";
-import { ExitToAppRounded } from "@mui/icons-material";
+import { AdminPanelSettings, ExitToAppRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -116,6 +116,7 @@ export default function AdminLayout({ children }) {
   const menuItems = [
     { title: "DashBoard", icon: <AppsIcon />, link: "/admin/" },
     { title: "Analytics", icon: <TimelineIcon />, link: "/admin/analytics" },
+    { title: "Admins", icon: <AdminPanelSettings />, link: "/admin/sudo" },
     { title: "Creators", icon: <PaletteIcon />, link: "/admin/creators" },
     { title: "Workers", icon: <WorkOutlineIcon />, link: "/admin/workers" },
   ];

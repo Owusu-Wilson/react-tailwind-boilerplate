@@ -7,33 +7,33 @@ import Pagination from "@mui/material/Pagination";
 import { Spinner } from "flowbite-react";
 import colors from "../../../theme";
 import AdminListItem from "../../components/Admin/AdminListItem";
-import AddCreatorModal from "../../components/Admin/AddCreatorModal";
+import AddAdminModal from "../../components/Admin/AddAdminModal";
 import CongratulationsModal from "../../components/CongratulationsModal";
-import CustomListItem from "../../components/CustomListItem";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 const ITEMS_PER_PAGE = 20;
 
-function AdminCreatorManagement() {
+function SuperAdmin() {
   const [page, setPage] = useState(1);
-  const [creatorsList, setCreatorsList] = useState([]);
+  const [adminsList, setAdminsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAddCreatorModalOpen, setIsAddCreatorModalOpen] = useState(false);
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
   const [showCongratulationsModal, setShowCongratulationsModal] =
     useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/creators/");
+        const response = await fetch("http://localhost:8000/admin/");
         if (!response.ok) {
-          throw new Error("Failed to fetch creators");
+          throw new Error("Failed to fetch admins");
         }
         const data = await response.json();
-        console.log("Creators Results:", data);
-        setCreatorsList(data);
+        console.log("Admins Results:", data);
+        setAdminsList(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching creators:", error.message);
+        console.error("Error fetching admins:", error.message);
       }
     };
 
@@ -54,21 +54,23 @@ function AdminCreatorManagement() {
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const endIndex = page * ITEMS_PER_PAGE;
 
-  const handleOpenAddCreatorModal = () => {
-    setIsAddCreatorModalOpen(true);
-  };
-
-  const handleCloseAddCreatorModal = () => {
-    setIsAddCreatorModalOpen(false);
-  };
-
-  const handleAddCreator = (newCreatorData) => {
-    // Logic to add creator goes here
-    // On successful creation, close the add creator modal
-    setIsAddCreatorModalOpen(false);
+  // event handlers
+  const handleAddAdmin = (newAdminData) => {
+    // Logic to add admin goes here
+    // On successful creation, close the add admin modal
+    setIsAddAdminModalOpen(false);
     // Show congratulations modal
     setShowCongratulationsModal(true);
-    // You can also fetch the updated list of creators and update state accordingly
+    // You can also fetch the updated list of admins and update state accordingly
+  };
+
+  // modal open event handlers
+  const handleOpenAddAdminModal = () => {
+    setIsAddAdminModalOpen(true);
+  };
+
+  const handleCloseAddAdminModal = () => {
+    setIsAddAdminModalOpen(false);
   };
 
   const handleCloseCongratulationsModal = () => {
@@ -77,9 +79,9 @@ function AdminCreatorManagement() {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-2">Manage Creators</h1>
+      <h1 className="font-bold text-2xl mb-2">Manage Admins</h1>
       <h1 className="font-bold text-2xl mb-2">
-        Total Creators: {creatorsList.length}
+        Total Creators: {adminsList.length}
       </h1>
       <Box
         sx={{
@@ -99,16 +101,12 @@ function AdminCreatorManagement() {
               bgcolor: "background.paper",
             }}
           >
-            {creatorsList.slice(startIndex, endIndex).map((creator, index) => (
-              <CustomListItem
-                key={index}
-                primaryText={creator.name}
-                secondaryText={creator.email}
-              />
+            {adminsList.slice(startIndex, endIndex).map((admin, index) => (
+              <AdminListItem key={index} admin={admin} />
             ))}
           </List>
         )}
-        {!loading && creatorsList.length > ITEMS_PER_PAGE && (
+        {!loading && adminsList.length > ITEMS_PER_PAGE && (
           <Box
             sx={{
               display: "flex",
@@ -117,7 +115,7 @@ function AdminCreatorManagement() {
             }}
           >
             <Pagination
-              count={Math.ceil(creatorsList.length / ITEMS_PER_PAGE)}
+              count={Math.ceil(adminsList.length / ITEMS_PER_PAGE)}
               page={page}
               onChange={handleChangePage}
               variant="outlined"
@@ -127,7 +125,7 @@ function AdminCreatorManagement() {
         )}
 
         {!loading && (
-          // Render create creator button if loading is false
+          // Render create admin button if loading is false
           <Box
             sx={{
               display: "flex",
@@ -139,20 +137,20 @@ function AdminCreatorManagement() {
             <Fab
               variant="extended"
               sx={{ backgroundColor: colors.orange }}
-              onClick={handleOpenAddCreatorModal}
+              onClick={handleOpenAddAdminModal}
             >
               <AddCircle sx={{ mr: 1 }} />
-              create creator
+              create admin
             </Fab>
           </Box>
         )}
       </Box>
 
-      {/* Add Creator Modal */}
-      <AddCreatorModal
-        isOpen={isAddCreatorModalOpen}
-        onClose={handleCloseAddCreatorModal}
-        onAddCreator={handleAddCreator}
+      {/* Add Admin Modal */}
+      <AddAdminModal
+        isOpen={isAddAdminModalOpen}
+        onClose={handleCloseAddAdminModal}
+        onAddAdmin={handleAddAdmin}
       />
 
       {/* Congratulations Modal */}
@@ -164,4 +162,4 @@ function AdminCreatorManagement() {
   );
 }
 
-export default AdminCreatorManagement;
+export default SuperAdmin;

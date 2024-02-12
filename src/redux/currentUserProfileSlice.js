@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userName: "admin",
   userEmail: "admin@admin.com",
-  userType: "creator", // creator, worker
+  userType: "admin", // creator, worker
 };
 export const currentuserProfileSlice = createSlice({
   name: "currentUserProfile",

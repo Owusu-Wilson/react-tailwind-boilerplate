@@ -33,6 +33,7 @@ import AdminWorkerManagement from "./pages/Admin/AdminWorkerManagement";
 import Channels from "./pages/Creator/Channels";
 import Analytics from "./pages/Creator/Analytics";
 import Campaigns from "./pages/Creator/Campaigns";
+import SuperAdmin from "./pages/Admin/SuperAdmin";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
             <AdminAuthRoutes>
               <Routes>
                 <Route index path="/" element={<AdminDashBoard />} />
+                <Route index path="/sudo" element={<SuperAdmin />} />
                 <Route index path="/analytics" element={<AdminAnalytics />} />
                 <Route
                   index
