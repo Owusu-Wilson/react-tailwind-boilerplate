@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-const ConfirmDeleteModal = ({ isOpen, onClose, item_to_delete }) => {
+const ConfirmDeleteModal = ({ isOpen, onClose, onCOnfirm, item_to_delete }) => {
   return (
     <Modal
       open={isOpen}
@@ -43,9 +43,10 @@ const ConfirmDeleteModal = ({ isOpen, onClose, item_to_delete }) => {
           Confirm Deletion
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Do you want to delete {item_to_delete}
+          Do you want to delete{" "}
+          <span className="font-bold italic"> {item_to_delete}</span>
         </Typography>
-        <Button onClick={onClose} sx={{ mt: 2 }}>
+        <Button onClick={onCOnfirm} sx={{ mt: 2 }}>
           Confirm
         </Button>
         <Button onClick={onClose} sx={{ mt: 2 }}>

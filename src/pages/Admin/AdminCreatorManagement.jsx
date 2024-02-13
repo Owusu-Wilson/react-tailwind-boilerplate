@@ -10,7 +10,7 @@ import AdminListItem from "../../components/Admin/AdminListItem";
 import AddCreatorModal from "../../components/Admin/AddCreatorModal";
 import CongratulationsModal from "../../components/CongratulationsModal";
 import CustomListItem from "../../components/CustomListItem";
-
+import { fetch_items } from "../../integration/crud-functions";
 const ITEMS_PER_PAGE = 20;
 
 function AdminCreatorManagement() {
@@ -24,11 +24,7 @@ function AdminCreatorManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/creators/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch creators");
-        }
-        const data = await response.json();
+        const data = await fetch_items("creators"); // Use fetch_items function from CRUD module
         console.log("Creators Results:", data);
         setCreatorsList(data);
         setLoading(false);
@@ -39,7 +35,6 @@ function AdminCreatorManagement() {
 
     // Fetch data initially
     fetchData();
-
     // Fetch data every 5 seconds
     const intervalId = setInterval(fetchData, 5000);
 

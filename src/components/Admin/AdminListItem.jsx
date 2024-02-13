@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { ListItemButton } from "@mui/material";
 import { DeleteForever } from "@mui/icons-material";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
+import { delete_item } from "../../integration/crud-functions";
 
 const BACKEND_URL = "http://localhost:8000/admin/";
 
@@ -22,18 +23,9 @@ function AdminListItem({ admin }) {
   const handleCloseConfirmDeleteModal = () => {
     setshowConfirmDeleteModal(false);
   };
-  const _delete = () => {
-    axios
-      .delete(`${BACKEND_URL}/${id}`)
-      .then(() => {
-        setLoading(false);
-        navigate("/");
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert("An Error has occurred, please try again");
-        console.log(err);
-      });
+  const handleConfirmDelete = () => {
+    delete_item(admin.id, "admin");
+    setshowConfirmDeleteModal(false);
   };
 
   return (
@@ -67,6 +59,8 @@ function AdminListItem({ admin }) {
       <ConfirmDeleteModal
         isOpen={showConfirmDeleteModal}
         onClose={handleCloseConfirmDeleteModal}
+        onCOnfirm={handleConfirmDelete}
+        item_to_delete={admin.name}
       />
     </div>
   );
